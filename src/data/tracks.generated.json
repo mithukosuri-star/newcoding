@@ -1,0 +1,110 @@
+[
+  {
+    "id": "neon-drift",
+    "title": "Neon Drift",
+    "artist": "Lumen Arc",
+    "album": "Midnight Circuit",
+    "genre": "Synthwave",
+    "moods": [
+      "night drive",
+      "energy"
+    ],
+    "bpm": 104,
+    "key": "A minor",
+    "cover": "/covers/neon-drift.jpg",
+    "accent": "#8b5cf6",
+    "audio": "/audio/neon-drift.mp3",
+    "duration": 147.69,
+    "bytes": 2954449
+  },
+  {
+    "id": "golden-hour",
+    "title": "Golden Hour",
+    "artist": "Kaya Mellow",
+    "album": "Slow Light",
+    "genre": "Lo-fi",
+    "moods": [
+      "chill",
+      "focus"
+    ],
+    "bpm": 82,
+    "key": "B minor",
+    "cover": "/covers/golden-hour.jpg",
+    "accent": "#f59e0b",
+    "audio": "/audio/golden-hour.mp3",
+    "duration": 163.9,
+    "bytes": 3278890
+  },
+  {
+    "id": "tidal-bloom",
+    "title": "Tidal Bloom",
+    "artist": "Aether Field",
+    "album": "Undercurrent",
+    "genre": "Ambient",
+    "moods": [
+      "focus",
+      "wind down"
+    ],
+    "bpm": 60,
+    "key": "F# major",
+    "cover": "/covers/tidal-bloom.jpg",
+    "accent": "#14b8a6",
+    "audio": "/audio/tidal-bloom.mp3",
+    "duration": 176.0,
+    "bytes": 3520784
+  },
+  {
+    "id": "static-bloom",
+    "title": "Static Bloom",
+    "artist": "Vela Gray",
+    "album": "Analog Ghosts",
+    "genre": "Downtempo",
+    "moods": [
+      "late night",
+      "focus"
+    ],
+    "bpm": 90,
+    "key": "C minor",
+    "cover": "/covers/static-bloom.jpg",
+    "accent": "#e11d48",
+    "audio": "/audio/static-bloom.mp3",
+    "duration": 149.33,
+    "bytes": 2987363
+  },
+  {
+    "id": "paper-planes",
+    "title": "Paper Planes",
+    "artist": "Kaya Mellow",
+    "album": "Slow Light",
+    "genre": "Lo-fi",
+    "moods": [
+      "chill",
+      "focus"
+    ],
+    "bpm": 76,
+    "key": "F major",
+    "cover": "/covers/golden-hour.jpg",
+    "accent": "#f59e0b",
+    "audio": "/audio/paper-planes.mp3",
+    "duration": 151.58,
+    "bytes": 3032294
+  },
+  {
+    "id": "afterglow",
+    "title": "Afterglow",
+    "artist": "Lumen Arc",
+    "album": "Midnight Circuit",
+    "genre": "Synthwave",
+    "moods": [
+      "wind down",
+      "late night"
+    ],
+    "bpm": 92,
+    "key": "D minor",
+    "cover": "/covers/neon-drift.jpg",
+    "accent": "#8b5cf6",
+    "audio": "/audio/afterglow.mp3",
+    "duration": 125.22,
+    "bytes": 2505143
+  }
+]

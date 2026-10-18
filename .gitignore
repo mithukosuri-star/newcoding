@@ -4,3 +4,11 @@ dist-ssr
 *.local
 .DS_Store
 npm-debug.log*
+
+# Python
+.venv
+__pycache__
+*.pyc
+
+# Generated during testing
+.smoke

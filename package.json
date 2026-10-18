@@ -1,5 +1,5 @@
 {
-  "name": "taskflow",
+  "name": "sonora",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -18,5 +18,6 @@
     "@vitejs/plugin-react": "^4.3.4",
     "typescript": "~5.6.3",
     "vite": "^6.3.5"
-  }
+  },
+  "description": "A local-first music player with an original, in-house synthesized catalogue"
 }
