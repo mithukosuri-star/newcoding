@@ -144,6 +144,22 @@ main h2 { font-weight: 600; font-size: 17px; margin: 4px 0 14px; }
 .badge.byo { border-color: var(--accent-2); color: var(--accent-2); }
 .card .dur { margin-left: auto; }
 
+.card .title-row { display: flex; align-items: flex-start; gap: 6px; }
+.card .title { flex: 1; }
+.fav-btn {
+  background: none; border: none; cursor: pointer; font-size: 16px;
+  color: var(--ink-dim); padding: 0 2px; line-height: 1;
+}
+.fav-btn:hover, .fav-btn.faved { color: var(--accent-3); }
+.fav-link { margin-top: 10px; list-style: none; }
+
+.shortcuts-hint {
+  position: fixed; right: 14px; bottom: 96px; z-index: 25;
+  font-size: 10px; color: var(--ink-dim);
+  background: rgba(20, 14, 32, 0.8); border: 1px solid var(--line);
+  border-radius: 8px; padding: 4px 10px; pointer-events: none;
+}
+
 .empty { color: var(--ink-dim); text-align: center; margin-top: 60px; }
 
 /* ---------- modal / BYO panel ---------- */

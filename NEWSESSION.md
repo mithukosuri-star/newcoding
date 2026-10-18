@@ -49,6 +49,10 @@ originals. Uploaded BYO files are re-indexed automatically by the
 server after upload; dropping files straight into `audio/byo/`
 just needs a `POST /api/refresh` or a rebuild.
 
+- [x] Keyboard shortcuts (space play/pause, ←/→ seek, ↑/↓ volume,
+      n/p next/prev, s shuffle, r repeat, / search) and
+      ♥ favourites persisted in localStorage.
+
 ## Known limitations / next steps
 
 - Bundled tracks are mono 22.05 kHz WAV (keeps the build dependency
@@ -56,5 +60,4 @@ just needs a `POST /api/refresh` or a rebuild.
 - The "vocal" lead is synthesized formant voice; real vocal stems
   belong in the BYO panel (legal: your own copies only).
 - BYO MP3/OGG durations are read client-side (no taglib dependency).
-- Possible next: playlists, favourites, keyboard shortcuts,
-  gapless crossfade, opus encoding.
+- Possible next: playlists, gapless crossfade, opus encoding.

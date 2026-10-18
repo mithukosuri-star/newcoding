@@ -8,7 +8,12 @@ const state = {
   shuffle: false,
   repeat: false,
   filter: { vibe: null, source: "all", query: "" },
+  favs: new Set(JSON.parse(localStorage.getItem("pratmusic:favs") || "[]")),
 };
+
+function saveFavs() {
+  localStorage.setItem("pratmusic:favs", JSON.stringify([...state.favs]));
+}
 
 const $ = (sel) => document.querySelector(sel);
 const audio = $("#audio");
@@ -32,6 +37,7 @@ function matches(t) {
   const f = state.filter;
   if (f.source === "generated" && t.source !== "generated") return false;
   if (f.source === "byo" && t.source !== "byo") return false;
+  if (f.source === "fav" && !state.favs.has(t.id)) return false;
   if (f.vibe && t.vibe !== f.vibe) return false;
   if (f.query) {
     const q = f.query.toLowerCase();
@@ -97,14 +103,18 @@ function renderGrid() {
   if (state.filter.source === "generated") headingBits.push("— PratMusic Originals (CC0)");
   $("#grid-heading").textContent = headingBits.length ? headingBits.join(" ") : "All tracks";
 
-  for (const t of tracks) {
+    for (const t of tracks) {
     const card = document.createElement("div");
     card.className = "card" + (state.queue[state.index]?.id === t.id ? " playing" : "");
     const art = t.artwork ? "/" + t.artwork : "";
+    const isFav = state.favs.has(t.id);
     card.innerHTML = `
       ${art ? `<img src="${art}" alt="" loading="lazy">` : `<div class="cover-fallback">🎵</div>`}
       <div class="body">
-        <div class="title">${esc(t.title)}</div>
+        <div class="title-row">
+          <div class="title">${esc(t.title)}</div>
+          <button class="fav-btn${isFav ? " faved" : ""}" data-fav="${t.id}" title="Favourite">${isFav ? "♥" : "♡"}</button>
+        </div>
         <div class="artist">${esc(t.artist)}</div>
         <div class="meta">
           ${t.vibe_label ? `<span class="badge vibe">${esc(t.vibe_label)}</span>` : ""}
@@ -112,10 +122,32 @@ function renderGrid() {
           <span class="dur">${fmt(t.duration)}</span>
         </div>
       </div>`;
-    card.onclick = () => playTrack(t.id);
+    card.onclick = (e) => {
+      if (e.target.classList.contains("fav-btn")) return; // handled below
+      playTrack(t.id);
+    };
     grid.appendChild(card);
   }
 }
+
+/* favourite toggling (event delegation) */
+const gridEl = $("#grid");
+gridEl.addEventListener("click", (e) => {
+  const btn = e.target.closest(".fav-btn");
+  if (!btn) return;
+  const id = btn.dataset.fav;
+  if (state.favs.has(id)) {
+    state.favs.delete(id);
+    btn.textContent = "♡";
+    btn.classList.remove("faved");
+  } else {
+    state.favs.add(id);
+    btn.textContent = "♥";
+    btn.classList.add("faved");
+  }
+  saveFavs();
+  if (state.filter.source === "fav") renderGrid();
+});
 
 function esc(s) {
   return String(s ?? "").replace(/[&<>"']/g, (c) =>
@@ -336,6 +368,44 @@ $("#byo-upload").onclick = async () => {
 };
 
 $("#byo-done-refresh").onclick = (e) => { e.preventDefault(); closeByo(); loadLibrary(); };
+
+/* ------------------------------------------------------------------ */
+/* keyboard shortcuts                                                  */
+/* ------------------------------------------------------------------ */
+document.addEventListener("keydown", (e) => {
+  const tag = (e.target.tagName || "").toLowerCase();
+  if (tag === "input" || tag === "select" || tag === "textarea") return;
+  switch (e.key) {
+    case " ":
+      e.preventDefault();
+      $("#btn-play").click();
+      break;
+    case "ArrowRight":
+      if (audio.duration) audio.currentTime = Math.min(audio.duration, audio.currentTime + 5);
+      break;
+    case "ArrowLeft":
+      audio.currentTime = Math.max(0, audio.currentTime - 5);
+      break;
+    case "ArrowUp":
+      e.preventDefault();
+      audio.volume = Math.min(1, audio.volume + 0.1);
+      $("#volume").value = audio.volume;
+      break;
+    case "ArrowDown":
+      e.preventDefault();
+      audio.volume = Math.max(0, audio.volume - 0.1);
+      $("#volume").value = audio.volume;
+      break;
+    case "n": nextTrack(); break;
+    case "p": prevTrack(); break;
+    case "s": $("#btn-shuffle").click(); break;
+    case "r": $("#btn-repeat").click(); break;
+    case "/":
+      e.preventDefault();
+      $("#search").focus();
+      break;
+  }
+});
 
 /* ------------------------------------------------------------------ */
 loadLibrary();
