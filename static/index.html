@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PratMusic — dream-pop · synth-pop · dance-pop</title>
+<link rel="stylesheet" href="/static/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">◮</span>
+    <h1>PratMusic</h1>
+    <span class="tagline">dream-pop · synth-pop · dance-pop</span>
+  </div>
+  <div class="topbar-actions">
+    <input id="search" type="search" placeholder="Search tracks, artists, vibes…" autocomplete="off">
+    <button id="byo-open" class="btn btn-accent" title="Add your own audio files">＋ Bring Your Own Files</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <section>
+      <h2>Vibes</h2>
+      <ul id="vibe-list" class="vibe-list"></ul>
+    </section>
+    <section>
+      <h2>Library</h2>
+      <ul class="src-list">
+        <li><a href="#" data-src="all" class="src active">Everything</a></li>
+        <li><a href="#" data-src="generated" class="src">PratMusic Originals <span class="cc">CC0</span></a></li>
+        <li><a href="#" data-src="byo" class="src">My Files</a></li>
+      </ul>
+    </section>
+    <section class="note">
+      <h2>About the bundles</h2>
+      <p>PratMusic Originals are <strong>CC0 original syntheses</strong> written
+      in the <em>vibe</em> of the artists below. Their actual masters are
+      copyrighted and are <strong>not</strong> bundled — add your own
+      recordings via <em>Bring Your Own Files</em>.</p>
+    </section>
+  </aside>
+
+  <main>
+    <div id="now-playing-strip" class="now-strip hidden">
+      <img id="np-art" alt="">
+      <div class="np-meta">
+        <div id="np-title" class="np-title"></div>
+        <div id="np-artist" class="np-artist"></div>
+      </div>
+    </div>
+    <h2 id="grid-heading">All tracks</h2>
+    <div id="grid" class="grid"></div>
+    <p id="empty-state" class="empty hidden">No tracks match. Try another filter.</p>
+  </main>
+</div>
+
+<!-- ============ Bring Your Own Files panel ============ -->
+<div id="byo-backdrop" class="modal-backdrop hidden">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="byo-title">
+    <header class="modal-head">
+      <h2 id="byo-title">Bring Your Own Files</h2>
+      <button id="byo-close" class="btn btn-ghost" aria-label="Close">✕</button>
+    </header>
+
+    <div class="byo-body">
+      <p class="byo-intro">Add your own recordings — the masters of
+        <strong>Lana Del Rey</strong>, <strong>The Neighbourhood</strong>,
+        <strong>Dua Lipa</strong>, <strong>Rihanna</strong> or
+        <strong>Lady Gaga</strong> that <em>you</em> own, or any other audio.
+        Files stay on your machine, under <code>audio/byo/</code>.</p>
+
+      <div id="dropzone" class="dropzone">
+        <div class="dz-icon">🎵</div>
+        <p><strong>Drag &amp; drop audio here</strong><br>
+        or</p>
+        <label class="btn btn-accent">
+          Browse files…
+          <input id="file-input" type="file" accept="audio/*,.mp3,.wav,.ogg,.flac,.m4a,.aac,.opus,.webm" multiple hidden>
+        </label>
+        <p class="dz-hint">MP3 · WAV · OGG · FLAC · M4A — up to 200 MB per request</p>
+      </div>
+
+      <div class="byo-form">
+        <label class="field">
+          <span>Tag these files for artist</span>
+          <div id="artist-chips" class="chips"></div>
+        </label>
+        <label class="field">
+          <span>Custom artist name</span>
+          <input id="byo-artist-custom" type="text" placeholder="e.g. Lana Del Rey">
+        </label>
+        <label class="field">
+          <span>Vibe</span>
+          <select id="byo-vibe"><option value="bring-your-own">— none (just “My Files”) —</option></select>
+        </label>
+        <label class="field">
+          <span>Rename tracks (optional)</span>
+          <input id="byo-title" type="text" placeholder="Defaults to the file name">
+        </label>
+        <button id="byo-upload" class="btn btn-primary" disabled>Upload &amp; add to library</button>
+      </div>
+
+      <div id="byo-progress" class="byo-progress hidden">
+        <div class="bar"><div id="byo-bar-fill"></div></div>
+        <p id="byo-status">Uploading…</p>
+      </div>
+
+      <div id="byo-done" class="byo-done hidden">
+        <p>✅ Added to <strong>My Files</strong>. <a href="#" id="byo-done-refresh">Refresh library</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Player bar ============ -->
+<footer class="playerbar">
+  <div class="pb-left">
+    <img id="pb-art" alt="" class="pb-art hidden">
+    <div class="pb-meta">
+      <div id="pb-title" class="pb-title">—</div>
+      <div id="pb-artist" class="pb-artist">nothing playing</div>
+    </div>
+  </div>
+  <div class="pb-center">
+    <div class="pb-controls">
+      <button id="btn-prev" class="ctl" title="Previous">⏮</button>
+      <button id="btn-play" class="ctl ctl-play" title="Play / pause">▶</button>
+      <button id="btn-next" class="ctl" title="Next">⏭</button>
+      <button id="btn-shuffle" class="ctl" title="Shuffle">🔀</button>
+      <button id="btn-repeat" class="ctl" title="Repeat">🔁</button>
+    </div>
+    <div class="pb-seek">
+      <span id="pb-cur">0:00</span>
+      <input id="seek" type="range" min="0" max="1000" value="0">
+      <span id="pb-total">0:00</span>
+    </div>
+  </div>
+  <div class="pb-right">
+    <span id="queue-count" class="queue-count"></span>
+    <input id="volume" type="range" min="0" max="1" step="0.01" value="0.9">
+  </div>
+</footer>
+
+<audio id="audio" preload="metadata"></audio>
+<script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# Generated / runtime artifacts — rebuild with: python3 tools/build_library.py
+audio/
+artwork/
+library/
+__pycache__/
+*.pyc
+.venv/
